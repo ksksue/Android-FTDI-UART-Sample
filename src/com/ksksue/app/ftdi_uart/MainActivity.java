@@ -66,10 +66,6 @@ public class MainActivity extends Activity {
             Log.e(TAG,ex.toString());
         }
 
-        if(!ftD2xx.setVIDPID(0x0403, 0xada1)) {
-            Log.i(TAG,"setVIDPID Error");
-        }
-
         IntentFilter filter = new IntentFilter();
         filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
         filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
@@ -107,6 +103,7 @@ public class MainActivity extends Activity {
     public void onDestroy() {
         super.onDestroy();
         mThreadIsStopped = true;
+        unregisterReceiver(mUsbReceiver);
     }
 
 /*    @Override
