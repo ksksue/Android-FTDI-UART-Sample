@@ -83,16 +83,18 @@ public class MainActivity extends Activity {
             return;
         }
 
-        if(ftDev.isOpen() == false) {
-            Log.e(TAG, "onClickWrite : Device is not open");
-            return;
+        synchronized (ftDev) {
+            if(ftDev.isOpen() == false) {
+                Log.e(TAG, "onClickWrite : Device is not open");
+                return;
+            }
+
+            ftDev.setLatencyTimer((byte)16);
+
+            String writeString = etWrite.getText().toString();
+            byte[] writeByte = writeString.getBytes();
+            ftDev.write(writeByte, writeString.length());
         }
-
-        ftDev.setLatencyTimer((byte)16);
-
-        String writeString = etWrite.getText().toString();
-        byte[] writeByte = writeString.getBytes();
-        ftDev.write(writeByte, writeString.length());
     }
 
     public void onClickClose(View v) {
